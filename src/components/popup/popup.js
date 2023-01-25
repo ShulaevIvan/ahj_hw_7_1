@@ -5,7 +5,6 @@ export default class Popup {
         this.addDataBtn = this.popup.querySelector(addDataBtn);
         this.popupBtn = document.querySelector(btn);
         this.popupCancel = this.popup.querySelector(closeBtn);
-
         this.btnClass = btn.replace('.', '');
         this.closeBtnClass = closeBtn.replace('.', '');
         this.addDataBtnClass = addDataBtn.replace('.', '');
@@ -60,7 +59,7 @@ export default class Popup {
                 id: null,
                 description: ticketDescription.value,
                 descriptionFull: ticketDescriptionFull.value,
-                status: undefined,
+                status: false,
                 date: date,
             }
             ticketDescription.classList.remove('warning');
@@ -79,22 +78,26 @@ export default class Popup {
                 status: undefined,
                 date: date,
             }
-            this.editData = data;
 
+            this.editData = data;
             ticketDescription.classList.remove('warning');
             this.popup.removeAttribute('edit');
-            console.log(this.editData.id)
-            const xhr = new XMLHttpRequest();
-            xhr.open('PATCH', `http://localhost:7070/?method=updateTicketById&id=${this.editData.id}`);
-            xhr.setRequestHeader('Content-type', 'application/json');
-            xhr.send(JSON.stringify(this.editData));
-            xhr.addEventListener('readystatechange', () =>{
-                if (xhr.readyState == 4 && xhr.status === 200) {
-                    const allTickets = document.querySelectorAll('.ticket').forEach((item) => item.remove());
-                    this.hide();
-                    this.editData = undefined;
-                    const ticketManager  = new TicketManager().getTickets();
-                }
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open('PATCH', `http://localhost:7070/?method=updateTicketById&id=${this.editData.id}`);
+                xhr.setRequestHeader('Content-type', 'application/json');
+                xhr.send(JSON.stringify(this.editData));
+                xhr.addEventListener('readystatechange', () =>{
+                    if (xhr.readyState == 4 && xhr.status === 200) {
+                        document.querySelectorAll('.ticket').forEach((item) => item.remove());
+                        this.hide();
+                        new TicketManager().getTickets();
+                        resolve();
+                    }
+                    else if (xhr.status === 400) {
+                        reject();
+                    }
+                });
             });
             
         }

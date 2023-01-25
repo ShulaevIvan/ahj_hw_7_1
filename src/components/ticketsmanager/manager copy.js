@@ -111,57 +111,42 @@ export default class TicketManager {
     }
 
     getTickets(){
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://localhost:7070/?method=allTickets');
-            xhr.setRequestHeader('Content-type', 'application/json');
-            xhr.send();
-            xhr.addEventListener('readystatechange', () => {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const tickets = JSON.parse(xhr.response);
-                    this.create(tickets);
-                    resolve();
-                }
-                else if (xhr.status != 200) {
-                    reject();
-                }
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:7070/?method=allTickets');
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send();
+        xhr.addEventListener('readystatechange', () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const tickets = JSON.parse(xhr.response);
+                this.create(tickets);
+            }
         });
-        });
-        
     }
 
 
     createTicketReq(data) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:7070/?method=createTicket');
-            xhr.setRequestHeader('Content-type', 'application/json');
-            console.log(data)
-            xhr.send(JSON.stringify(data));
-            xhr.addEventListener('readystatechange', () => {
-                if (xhr.readyState === 4 && xhr.status === 201) {
-                    console.log('ready');
-                    this.create(JSON.parse(xhr.response));
-                    resolve();
-                }
-                else if (xhr.status == 400) reject();
-            });
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:7070/?method=createTicket');
+        xhr.setRequestHeader('Content-type', 'application/json');
+        console.log(data)
+        xhr.send(JSON.stringify(data));
+        xhr.addEventListener('readystatechange', () => {
+            if (xhr.readyState === 4 && xhr.status === 201) {
+                console.log('ready');
+                this.create(JSON.parse(xhr.response));
+            }
         });
-       
     };
 
     removeTicketReq(ticketId) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('DELETE', `http://localhost:7070/?method=deleteTicketById&id=${ticketId}`);
-            xhr.setRequestHeader('Content-type', 'application/json');
-            xhr.send();
-            xhr.addEventListener('readystatechange', () => {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log('ready');
-                }
-                else if (xhr.status === 400) reject();
-            });
+        const xhr = new XMLHttpRequest();
+        xhr.open('DELETE', `http://localhost:7070/?method=deleteTicketById&id=${ticketId}`);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send();
+        xhr.addEventListener('readystatechange', () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('ready');
+            }
         });
     }
 
@@ -195,7 +180,10 @@ export default class TicketManager {
                 if (ticketData.status) {
                     checkbox.setAttribute('status', true)
                     checkbox.click();
-                } else checkbox.setAttribute('status', false);
+                }
+                else {
+                    checkbox.setAttribute('status', false);
+                }
                 ticket.setAttribute('ticketId', ticketData.id);
                 ticket.classList.add('ticket');
                 ticketText.classList.add('ticket-text');
