@@ -1,10 +1,13 @@
 body {
     box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    max-width: 1920px;
 }
 
 .app-container {
     display: flex;
-    width: 80%;
+    width: 100%;
     max-width: 1024px;
     flex-direction: column;
 }
@@ -20,6 +23,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100vh;
     margin: 10px 0;
 }
 .ticket {
@@ -27,7 +31,7 @@ body {
     flex-direction: row;
     border: 1px solid black;
     height: 50px;
-    width: 100%;
+    width: 98.5%;
     padding: 5px;
 }
 .ticket-text{
