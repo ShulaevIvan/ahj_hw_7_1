@@ -2,6 +2,7 @@ import Popup from '../components/popup/popup';
 import TicketManager from '../components/ticketsmanager/manager';
 
 window.addEventListener('DOMContentLoaded', () => {
+  
   const addTicketBtn = document.querySelector('.popup-add-ticket-btn');
   const ticketManager = new TicketManager();
   ticketManager.getTickets();
