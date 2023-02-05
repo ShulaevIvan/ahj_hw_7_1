@@ -30,7 +30,7 @@ body {
     display: flex;
     flex-direction: row;
     border: 1px solid black;
-    height: 50px;
+    min-height: 50px;
     width: 98.5%;
     padding: 5px;
 }
@@ -41,6 +41,56 @@ body {
     align-items: center;
     justify-content: start;
     font-size: 18px;
+    flex-wrap: wrap;
+    cursor: pointer;
+}
+.ticket-inner-desc {
+    display: flex;
+    align-items: center;
+    max-width: 50%;
+    min-width: 40%;
+    min-height: 50px;
+}
+.ticket-inner-desc p {
+    text-align: center;
+}
+.ticket-full-desc-mode {
+    min-height: 150px;
+}
+.ticket-full-desc-title  {
+    display: flex;
+    margin-bottom: 20px;
+}
+.ticket-full-description {
+    display: flex;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    width: 100%;
+}
+.ticket-full-description-align {
+    align-items: flex-start!important;
+    padding: 20px;
+}
+
+.ticket-full-desc-wrap {
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word; 
+    display: flex;
 }
 
 .ticket-date {

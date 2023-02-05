@@ -20,6 +20,33 @@ export default class TicketManager {
     );
     this.create = this.create.bind(this);
 
+    this.showDescription = (e) => {
+      e.preventDefault();
+      const target = e.target;
+      const ticket = target.closest('.ticket');
+      const ticketFullStatus = target.getAttribute('ticketDescFull');
+
+      if (ticketFullStatus === 'true' && target.classList.contains('ticket-text')) {
+        const ticketId = ticket.getAttribute('ticketid');
+        ticket.setAttribute('ticketDescFull', false);
+        const promise = new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', `http://localhost:7070/?ticketById&id=${ticketId}`);
+          xhr.send();
+          xhr.addEventListener('readystatechange', () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              resolve(xhr.response);
+            } else if (xhr.status === 400) reject();
+          });
+        }).then((data) => {
+          const ticketData = JSON.parse(data);
+          this.createDescriptionFull(ticketData, ticket);
+        });
+      } else {
+        this.removeDesciprionFull(ticket);
+      }
+    };
+
     this.removeTicketEvent = (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -200,6 +227,8 @@ export default class TicketManager {
         checkbox.addEventListener('click', this.checkboxEvent);
         edit.addEventListener('click', this.editTicketEvent);
         remove.addEventListener('click', this.removeTicketEvent);
+        ticketText.addEventListener('click', this.showDescription);
+        ticketText.setAttribute('ticketDescFull', true);
         ticketText.textContent = ticketData.description;
         ticketDate.textContent = ticketData.created;
         ticketControl.appendChild(edit);
@@ -210,5 +239,56 @@ export default class TicketManager {
         wrap.appendChild(ticket);
       });
     }
+  }
+
+  createDescriptionFull(data, ticket) {
+    this.ticketTag = ticket;
+    const ticketText = this.ticketTag.querySelector('.ticket-text');
+    const ticketCheckbox = this.ticketTag.querySelector('.ticket-chekbox');
+    const ticketDate = this.ticketTag.querySelector('.ticket-date');
+    const ticketControl = this.ticketTag.querySelector('.ticket-control');
+    ticketText.classList.add('ticket-full-description-align');
+    ticketText.textContent = '';
+    this.ticketDesc = ticketText;
+    this.ticketData = data;
+
+    const ticketFullDescWrap = document.createElement('div');
+    const ticketFullDescTitle = document.createElement('div');
+    const ticketFullDesciption = document.createElement('div');
+
+    ticketFullDescTitle.textContent = this.ticketData.description;
+    ticketFullDesciption.textContent = this.ticketData.descriptionFull;
+    ticketFullDescTitle.classList.add('ticket-full-desc-title');
+    ticketFullDescWrap.classList.add('ticket-full-desc-wrap');
+    ticketFullDesciption.classList.add('ticket-full-description');
+
+    ticketFullDescWrap.appendChild(ticketFullDescTitle);
+    ticketFullDescWrap.appendChild(ticketFullDesciption);
+    this.ticketDesc.appendChild(ticketFullDescWrap);
+
+    ticketCheckbox.classList.add('ticket-full-description-align');
+    ticketDate.classList.add('ticket-full-description-align');
+    ticketControl.classList.add('ticket-full-description-align');
+    ticketText.classList.add('ticket-full-description-align');
+    this.ticket.setAttribute('ticketDescFull', false);
+  }
+
+  removeDesciprionFull(ticketTag) {
+    this.ticket = ticketTag;
+    this.ticketText = this.ticket.querySelector('.ticket-text');
+
+    const ticketCheckbox = this.ticketTag.querySelector('.ticket-chekbox');
+    const ticketDate = this.ticketTag.querySelector('.ticket-date');
+    const ticketControl = this.ticketTag.querySelector('.ticket-control');
+    const newTitle = this.ticket.querySelector('.ticket-full-desc-title').textContent;
+    const title = this.ticket.querySelector('.ticket-text');
+
+    this.ticketText.firstChild.remove();
+    title.textContent = newTitle;
+    ticketCheckbox.classList.remove('ticket-full-description-align');
+    ticketDate.classList.remove('ticket-full-description-align');
+    ticketControl.classList.remove('ticket-full-description-align');
+    this.ticketText.classList.remove('ticket-full-description-align');
+    this.ticket.setAttribute('ticketDescFull', true);
   }
 }
