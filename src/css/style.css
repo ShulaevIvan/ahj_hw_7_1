@@ -63,9 +63,6 @@ body {
 }
 .ticket-full-description {
     display: flex;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
     white-space: -pre-wrap;
@@ -82,10 +79,6 @@ body {
     display: flex;
     flex-direction: column;
     min-width: 100%;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    white-space: pre-wrap;
     white-space: -moz-pre-wrap;
     white-space: -pre-wrap;
     white-space: -o-pre-wrap;
@@ -284,7 +277,7 @@ body {
     text-align: center;
 }
 .popup-rm-ticket {
-
+    margin: auto;
 }
 .popup-warning-cancel-btn, .popup-warning-btn, .popup-cancel-ticket-btn, .popup-add-ticket-btn {
     width: 125px;
