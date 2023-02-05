@@ -277,7 +277,7 @@ body {
     text-align: center;
 }
 .popup-rm-ticket {
-
+    border: 1px solid;
 }
 .popup-warning-cancel-btn, .popup-warning-btn, .popup-cancel-ticket-btn, .popup-add-ticket-btn {
     width: 125px;
